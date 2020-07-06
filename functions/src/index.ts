@@ -154,4 +154,36 @@ app.post('/signup', (async(req, res) => {
     return;
 }));
 
+app.post('/login', (async(req, res) => {
+    const { body } = req;
+    const { email, password } = body;
+
+    const errors = <any>{};
+
+    if(isEmpty(email)) {
+        errors.email = 'Must not be empty';
+    } else if (!isEmail(email)) {
+        errors.email = 'Must be a valid email address';
+    }
+
+    if (isEmpty(password)) {
+        errors.password = 'Must not be empty';
+    }
+
+    if (Object.keys(errors).length) {
+        return res.status(400).json(errors);
+    }
+
+    try {
+        const data = await firebase.auth().signInWithEmailAndPassword(email, password);
+        token = await data.user?.getIdToken();
+        return res.json(token);
+    } catch (e) {
+        console.log(e);
+        return res.json(500).json( { message: e.statusText });
+    }
+
+    return;
+}));
+
 exports.api = functions.https.onRequest(app);
