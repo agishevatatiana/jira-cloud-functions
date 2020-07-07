@@ -16,3 +16,13 @@ export interface User {
     email: string;
     full_name: string;
 }
+
+export interface SignUpUser extends User {
+    password: string;
+    confirmPassword: string;
+}
+
+export interface LogInUser {
+    email: string;
+    password: string;
+}
