@@ -1,3 +1,5 @@
+export type taskStatus = 'to_do' | 'in_progress' | 'done';
+
 export interface Project {
     lead: string;
     name: string
@@ -5,10 +7,11 @@ export interface Project {
 
 export interface Task {
     project_key: string;
-    reporter: string;
+    reporter: string; // the key of the user who reported task
     description: string;
-    status: string;
+    status: taskStatus;
     summary: string;
+    assignee?: string; // the key of the user who assigned to do this task
 }
 
 export interface User {

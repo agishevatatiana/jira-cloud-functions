@@ -41,13 +41,17 @@ const FBAuth = (async (req: any, res: any, next: any) => {
     }
 });
 
+app.post('/signup', signUp);
+app.post('/login', logIn);
+
 app.get('/projects', FBAuth, getProjects);
 app.post('/project', FBAuth, createProject);
 app.get('/tasks', FBAuth, getTasks);
 app.post('/task', FBAuth, createTask);
 app.get('/users', FBAuth, getUsers);
-app.post('/signup', signUp);
-app.post('/login', logIn);
+
+// app.post('/user/image', uploadImage);
+
 
 exports.api = functions.https.onRequest(app);
 
