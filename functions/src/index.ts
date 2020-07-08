@@ -19,7 +19,7 @@ firebase.initializeApp(firebaseConfig);
 const app = express();
 
 import { getProjects, createProject } from "./projects";
-import { getTasks, createTask } from "./tasks";
+import { getTasks, createTask, updateTaskStatus } from "./tasks";
 import { getUsers } from "./users";
 import { signUp, logIn } from "./authentication";
 
@@ -46,8 +46,11 @@ app.post('/login', logIn);
 
 app.get('/projects', FBAuth, getProjects);
 app.post('/project', FBAuth, createProject);
+
 app.get('/tasks', FBAuth, getTasks);
 app.post('/task', FBAuth, createTask);
+app.patch('/task/:taskId', FBAuth, updateTaskStatus);
+
 app.get('/users', FBAuth, getUsers);
 
 // app.post('/user/image', uploadImage);

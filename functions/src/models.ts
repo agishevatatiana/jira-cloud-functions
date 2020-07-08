@@ -1,6 +1,7 @@
 export type taskStatus = 'to_do' | 'in_progress' | 'done';
 
 export interface Project {
+    key: string // usually the first letters of words which are used in name
     lead: string;
     name: string
 }
@@ -11,6 +12,7 @@ export interface Task {
     description: string;
     status: taskStatus;
     summary: string;
+    sequence: number; // sequence of creation, it doesn't change if smth was removed
     assignee?: string; // the key of the user who assigned to do this task
 }
 
