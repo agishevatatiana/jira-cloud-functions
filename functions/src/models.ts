@@ -31,3 +31,5 @@ export interface LogInUser {
     email: string;
     password: string;
 }
+
+export const POSSIBLE_STATUSES = ['to_do', 'in_progress', 'done'];

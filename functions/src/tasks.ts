@@ -1,6 +1,6 @@
 import * as admin from "firebase-admin";
 
-import { Task } from "./models";
+import { POSSIBLE_STATUSES, Task } from "./models";
 import { isEmpty, messages } from "./utils";
 
 const db = admin.firestore();
@@ -61,10 +61,14 @@ export const createTask = (async(req: any, res: any): Promise<any> => {
 });
 
 export const updateTaskStatus = (async (req: any, res: any): Promise<any> => {
-
-    // todo: figure out where to take the taskKye
-    const { body } = req;
+    const { body, params } = req;
     const { status } = body;
+    const { taskKey } = params;
+
+    if (!status || !POSSIBLE_STATUSES.includes(status)) {
+        const message = { error: 'Impossible status' };
+        return res.status(404).json(message);
+    }
 
     try {
         const taskToUpdate = db.doc(`tasks/${taskKey}`);
@@ -75,11 +79,10 @@ export const updateTaskStatus = (async (req: any, res: any): Promise<any> => {
             return res.status(404).json(message);
         }
 
-        const data = await taskToUpdate.update(status);
-        return res.status(200).json({ message: `Status updated to ${status} the task ${taksKey}`});
+        await taskToUpdate.update({ status });
+        return res.status(200).json({ message: `Status updated to ${status} the task ${taskKey}`});
     } catch (err) {
         console.log('Error adding project: ', err);
         return res.status(500).json(err);
     }
-
 });

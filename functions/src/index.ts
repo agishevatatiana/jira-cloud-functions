@@ -49,7 +49,7 @@ app.post('/project', FBAuth, createProject);
 
 app.get('/tasks', FBAuth, getTasks);
 app.post('/task', FBAuth, createTask);
-app.patch('/task/:taskId', FBAuth, updateTaskStatus);
+app.patch('/task/:taskKey', FBAuth, updateTaskStatus);
 
 app.get('/users', FBAuth, getUsers);
 
