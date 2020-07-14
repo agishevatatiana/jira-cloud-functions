@@ -5,9 +5,9 @@ import { isEmpty, messages } from "./utils";
 
 const db = admin.firestore();
 
-// TODO: 1. update status
+// TODO: 1. update status +
 //       2. remove task
-//       3. get tasks count by status
+//       3. get tasks count by status +
 
 export const getTasks = (async(req: any, res: any): Promise<any> => {
     try {
@@ -19,6 +19,25 @@ export const getTasks = (async(req: any, res: any): Promise<any> => {
         return res.json(sh);
     } catch (err) {
         console.log('Error getting tasks:', err);
+    }
+});
+
+export const getTasksCountByStatus = (async(req: any, res: any): Promise<number> => {
+    if (!req.params || !req.params.status || !req.params.projectKey || !POSSIBLE_STATUSES.includes(req.params.status)) {
+        return res.status(400).json('Impossible status');
+    }
+    const status = req.params.status;
+    const projectKey = req.params.projectKey;
+    try {
+        const snapshot = await db.collection('tasks')
+            .where('status', '==', status)
+            .where('project_key', '==', projectKey)
+            .get();
+        const tasksCount = snapshot.size;
+        return res.json(tasksCount);
+    } catch (err) {
+        console.log('Error getting tasks:', err);
+        return res.status(500).json(err);
     }
 });
 
@@ -83,6 +102,29 @@ export const updateTaskStatus = (async (req: any, res: any): Promise<any> => {
         return res.status(200).json({ message: `Status updated to ${status} the task ${taskKey}`});
     } catch (err) {
         console.log('Error adding project: ', err);
+        return res.status(500).json(err);
+    }
+});
+
+export const removeTask = (async (req: any, res: any): Promise<any> => {
+    const message = { error: 'Task not found' };
+    if (!req.params || !req.params.taskKey) {
+        return res.status(404).json(message);
+    }
+     const taskKey = req.params.taskKey;
+
+    try {
+        const taskToRemove = db.doc(`tasks/${taskKey}`);
+        const taskToRemoveExists = (await taskToRemove.get()).exists;
+
+        if (!taskToRemoveExists) {
+            return res.status(404).json(message);
+        }
+
+        await taskToRemove.delete();
+        return res.status(200).json({ message: `Task was successfully deleted!`});
+    } catch (err) {
+        console.log(err);
         return res.status(500).json(err);
     }
 });

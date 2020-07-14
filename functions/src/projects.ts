@@ -7,7 +7,7 @@ const db = admin.firestore();
 
 // TODO 1. validation callable function:
 //  key/name create depend on name and check for unique (A project with that key/name already exists)
-//  call on the client to allow or forbid creation
+//  call on the client to allow or forbid creation +
 //  2. implement remove project
 
 const isPropertyExists = async (property: string, value: string): Promise<null | string> => {
@@ -53,6 +53,29 @@ export const createProject = (async(req: any, res: any): Promise<any> => {
         return res.json({ message: `project ${data.id} created successfully` });
     } catch (err) {
         console.log('Error adding project: ', err);
+        return res.status(500).json(err);
+    }
+});
+
+export const removeProject = (async (req: any, res: any): Promise<any> => {
+    const message = { error: 'Project not found' };
+    if (!req.params || !req.params.projectKey) {
+        return res.status(404).json(message);
+    }
+    const projectKey = req.params.projectKey;
+
+    try {
+        const projectToRemove = db.doc(`projects/${projectKey}`);
+        const projectToRemoveExists = (await projectToRemove.get()).exists;
+
+        if (!projectToRemoveExists) {
+            return res.status(404).json(message);
+        }
+
+        await projectToRemove.delete();
+        return res.status(200).json({ message: `Project was successfully deleted!`});
+    } catch (err) {
+        console.log(err);
         return res.status(500).json(err);
     }
 });
