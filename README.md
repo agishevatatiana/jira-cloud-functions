@@ -4,23 +4,25 @@ api for jira project:
 
 /users
 
-getUsers
-signUp
-logIn
+##### - getUsers
+##### - signUp
+##### - logIn
 
 /projects
 
-getProjects
-createProject
-removeProject
+##### - getProjects
+##### - createProject
+##### - removeProject
 
 /tasks
 
-getTasks
-getTasksCountByStatus
-createTask
-updateTaskStatus
-removeTask
+##### - getTasks
+##### - getTasksCountByStatus
+##### - createTask
+##### - updateTaskStatus
+##### - removeTask
+
+
 
 httpCallable function for validation: 
-validateProjectsProperties
+##### - validateProjectsProperties
