@@ -20,8 +20,8 @@ firebase.initializeApp(firebaseConfig);
 
 const app = express();
 
-import {getProjects, createProject, removeProject} from "./projects";
-import {getTasks, createTask, updateTaskStatus, getTasksCountByStatus, removeTask} from "./tasks";
+import { getProjects, createProject, removeProject } from "./projects";
+import { getTasks, createTask, updateTaskStatus, getTasksCountByStatus, removeTask } from "./tasks";
 import { getUsers } from "./users";
 import { signUp, logIn } from "./authentication";
 
