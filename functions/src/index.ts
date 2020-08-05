@@ -6,6 +6,8 @@ import * as firebase from "firebase";
 import { auth } from "./auth";
 import { firebaseConfig } from "./fb-config";
 
+// todo: after client will work: separate validation parts if necessary
+
 try {
     admin.initializeApp({
         credential: admin.credential.cert(auth),

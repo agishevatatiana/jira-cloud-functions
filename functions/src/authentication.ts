@@ -43,10 +43,11 @@ export const logIn = (async(req: any, res: any) => {
 
     try {
         const data = await firebase.auth().signInWithEmailAndPassword(email, password);
+
         token = await data.user?.getIdToken();
         return res.json(token);
     } catch (e) {
-        console.log(e);
-        return res.json(500).json( { message: e.statusText });
+        console.log('errors: ', e);
+        return res.status(500).json( { message: e.statusText });
     }
 });
