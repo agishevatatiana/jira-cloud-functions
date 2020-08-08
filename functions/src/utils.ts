@@ -12,7 +12,7 @@ const isEmail = (email: string): boolean => {
 export const isEmpty = (str: string): boolean => str.trim() === '';
 
 export const ValidationSugnUpFn = (
-    {full_name, email, password, confirmPassword}: SignUpUser,
+    { full_name, email, password, confirmPassword}: SignUpUser,
     res: any
 ): void => {
     const errors = <any>{};
@@ -29,6 +29,10 @@ export const ValidationSugnUpFn = (
 
     if (isEmpty(password)) {
         errors.password = messages.required;
+    }
+
+    if (isEmpty(confirmPassword)) {
+        errors.confirmPassword = messages.required;
     }
 
     if (password !== confirmPassword) {
